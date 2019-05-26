@@ -31,19 +31,21 @@
 
 void* zalloc(size_t size)
 {
-    // Guard against overflows later down the line
+    // Guard against overflows later down the line if some idiot passes negative values
     if ((size + sizeof(zmem_header_t)) < size)
     {
         errno = ENOMEM;
         return nullptr;
     }
 
+    // Allocating zero-sized blocks is not allowed
     if (size < 1)
     {
         errno = ZERR_INVALID_SIZE;
         return nullptr;
     }
 
+    // calloc might return a nullptr if we're out of memory, so check for that
     void* mem = calloc(size + sizeof(zmem_header_t), 1);
     if (mem == nullptr)
     {
@@ -66,14 +68,15 @@ bool zfree(void** mem)
 
     char* actual_start = ((*(char**)mem) - sizeof(zmem_header_t));
     zmem_header_t* header = (zmem_header_t*)actual_start;
-    if (header->magic != 0xBEEF)
+    if (header->magic != ZMEM_HEADER_MAGIC)
     {
         errno = ZERR_BAD_MAGIC;
         return false;
     }
 
     size_t size = header->size;
-    memset((void*)actual_start, 0, size + sizeof(zmem_header_t));
+
+    secure_erase((void*)actual_start, size + sizeof(zmem_header_t));
 
     free((void*)actual_start);
     *mem = nullptr;

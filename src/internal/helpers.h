@@ -23,8 +23,34 @@
 #ifndef ZALLOC_HELPERS_H
 #define ZALLOC_HELPERS_H
 
+#include <stdlib.h>
+#include <string.h>
+
 #ifndef nullptr
     #define nullptr NULL
 #endif
+
+#define __STDC_WANT_LIB_EXT1__ 1
+
+/**
+ * Securely(ish) erases a block of memory by zeroing it out, and ensuring optimiztions don't mess with our results.
+ * @param pointer A pointer to the start of the block to erase.
+ * @param size_data The size of the data.
+ * @remarks Big thanks to Robert Seacord and David Wong over at
+ * https://www.cryptologie.net/article/419/zeroing-memory-compiler-optimizations-and-memset_s/ for providing this
+ * technique and a detailed explanation to boot. Minor changes have been made to simplify the usage.
+ */
+void secure_erase(void* pointer, size_t size)
+{
+    #ifdef __STDC_LIB_EXT1__
+        memset_s(pointer, size, 0, size);
+    #else
+        volatile unsigned char *p = pointer;
+        while (size--)
+        {
+            *p++ = 0;
+        }
+    #endif
+}
 
 #endif //ZALLOC_HELPERS_H
