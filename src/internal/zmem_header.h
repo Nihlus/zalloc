@@ -27,12 +27,17 @@
 #include <stdint.h>
 
 /**
+ * Defines the magic signature for zmem blocks.
+ */
+#define ZMEM_HEADER_MAGIC 0xBEEF
+
+/**
  * Defines a header for memory blocks allocated with @see zalloc.
  */
 typedef struct zmem_header
 {
     /**
-     * A magic signature for zmem blocks. Always 0xBEEF.
+     * A magic signature for zmem blocks. Always @see ZMEM_HEADER_MAGIC.
      */
     int32_t magic;
 
@@ -47,7 +52,7 @@ typedef struct zmem_header
  */
 void zmem_header(zmem_header_t* header, size_t size)
 {
-    header->magic = 0xBEEF;
+    header->magic = ZMEM_HEADER_MAGIC;
     header->size = size;
 }
 
