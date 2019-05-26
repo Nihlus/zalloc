@@ -33,7 +33,7 @@
 #define __STDC_WANT_LIB_EXT1__ 1
 
 /**
- * Securely(ish) erases a block of memory by zeroing it out, and ensuring optimiztions don't mess with our results.
+ * Securely(ish) erases a block of memory by zeroing it out, and ensuring optimizations don't mess with our results.
  * @param pointer A pointer to the start of the block to erase.
  * @param size_data The size of the data.
  * @remarks Big thanks to Robert Seacord and David Wong over at
