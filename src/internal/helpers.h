@@ -45,7 +45,7 @@ void secure_erase(void* pointer, size_t size)
     #ifdef __STDC_LIB_EXT1__
         memset_s(pointer, size, 0, size);
     #else
-        volatile unsigned char *p = pointer;
+        volatile unsigned char* p = pointer;
         while (size--)
         {
             *p++ = 0;
