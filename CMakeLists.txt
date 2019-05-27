@@ -10,7 +10,9 @@ target_sources(
     PRIVATE
         src/zalloc.c
         src/internal/zmem_header.h
+        src/internal/zmem_header.c
         src/internal/helpers.h
+        src/internal/helpers.c
     PUBLIC
         src/include/zalloc.h
 )

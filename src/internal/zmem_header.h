@@ -25,6 +25,7 @@
 
 #include <stddef.h>
 #include <stdint.h>
+#include <stdbool.h>
 
 /**
  * Defines the magic signature for zmem blocks.
@@ -50,10 +51,18 @@ typedef struct zmem_header
 /**
  * Initializes a new instance of the @see zmem_header_t structure.
  */
-void zmem_header(zmem_header_t* header, size_t size)
-{
-    header->magic = ZMEM_HEADER_MAGIC;
-    header->size = size;
-}
+void zmem_header(zmem_header_t* header, size_t size);
+
+/**
+ * Attempts to retrieve the header from a block of memory allocated by @see zalloc.
+ * @param mem A pointer to the memory block.
+ * @param header Output. A pointer to the header, or null.
+ * @return True if a valid header was found; otherwise, false.
+ * @remarks @see header is always nulled if this function fails for any reason. header will only take on a valid value
+ * when this function returns true. In the case of an error where no header could be found, examine @see errno for more
+ * information. The possible values errno can take on include @see ZERR_INVALID_HANDLE (which is set when @see mem is
+ * null or @see ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
+ */
+bool try_get_zmem_header(const void* mem, zmem_header_t** header);
 
 #endif //ZALLOC_ZMEM_HEADER_H

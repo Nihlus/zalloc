@@ -60,22 +60,21 @@ void* zalloc(size_t size)
 
 bool zfree(void** mem)
 {
-    if (mem == nullptr || *mem == nullptr)
+    if (mem == nullptr)
     {
         errno = ZERR_INVALID_HANDLE;
         return false;
     }
 
-    char* actual_start = ((*(char**)mem) - sizeof(zmem_header_t));
-    zmem_header_t* header = (zmem_header_t*)actual_start;
-    if (header->magic != ZMEM_HEADER_MAGIC)
+    zmem_header_t* header = nullptr;
+    if (!try_get_zmem_header(*mem, &header))
     {
-        errno = ZERR_BAD_MAGIC;
         return false;
     }
 
     size_t size = header->size;
 
+    char* actual_start = ((*(char**)mem) - sizeof(zmem_header_t));
     secure_erase((void*)actual_start, size + sizeof(zmem_header_t));
 
     free((void*)actual_start);
@@ -86,18 +85,10 @@ bool zfree(void** mem)
 
 size_t zsize(const void* mem)
 {
-    if (mem == nullptr)
+    zmem_header_t* header = nullptr;
+    if (!try_get_zmem_header(mem, &header))
     {
-        errno = ZERR_INVALID_HANDLE;
-        return 0;
-    }
-
-    char* actual_start = ((*(char**)mem) - sizeof(zmem_header_t));
-    zmem_header_t* header = (zmem_header_t*)actual_start;
-    if (header->magic != ZMEM_HEADER_MAGIC)
-    {
-        errno = ZERR_BAD_MAGIC;
-        return 0;
+        return false;
     }
 
     return header->size;
