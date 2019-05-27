@@ -14,7 +14,7 @@ behaviour for any permutation of its inputs our outputs.
 ------------------------------------------------------------------------------------------------------------------------
 `void* zalloc(size_t size)`
 
-Allocates a block of zero-initialized memory. The block carries a memory overhead of 12 bytes.
+Allocates a block of zero-initialized memory. 
 
 ------------------------------------------------------------------------------------------------------------------------
 `bool zfree(void** mem)`
@@ -47,3 +47,8 @@ free the memory in a safe and well-defined manner.
 Currently, this header contains two fields - a magic signature that marks the region as being allocated by `zalloc`, and
 the byte size of the following memory region. The header and its layout is to be considered an internal implementation
 detail, and should not be accessed by consumers.
+
+### Drawbacks?
+Allocation and deallocation incurs a small CPU overhead, because the memory is explicitly zeroed in both operations.
+
+Allocated memory blocks carry a memory overhead of 12 bytes per block.
