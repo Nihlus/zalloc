@@ -37,7 +37,7 @@
 #define ZERR_INVALID_HANDLE (1u << 1u)
 
 /**
- * Set when a handle that was not allocated by @see zalloc is passed to @see zfree.
+ * Set when a handle that was not allocated by @see zalloc is passed to a zalloc function.
  */
 #define ZERR_BAD_MAGIC (1u << 2u)
 
@@ -60,5 +60,15 @@ void* zalloc(size_t size);
  * points to a null value) or @see ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
  */
 bool zfree(void** mem);
+
+/**
+ * Determines the size of the given memory block allocated by @see zalloc.
+ * @param mem A pointer to the start of the allocated data block.
+ * @return The size of the allocated data block, or 0 if no size could be determined.
+ * @remarks In the case of an error where no size could be determined, examine @see errno for more information. The
+ * possible values errno can take on include @see ZERR_INVALID_HANDLE (which is set when @see mem is null or @see
+ * ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
+ */
+size_t zsize(const void* mem);
 
 #endif //ZALLOC_ZALLOC_H
