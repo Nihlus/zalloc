@@ -22,6 +22,11 @@
 
 #include "helpers.h"
 
+#define __STDC_WANT_LIB_EXT1__ 1
+#ifdef __STDC_LIB_EXT1__
+    #include <string.h>
+#endif
+
 void secure_erase(void* pointer, size_t size)
 {
     #ifdef __STDC_LIB_EXT1__

@@ -30,8 +30,6 @@
     #define nullptr NULL
 #endif
 
-#define __STDC_WANT_LIB_EXT1__ 1
-
 /**
  * Securely(ish) erases a block of memory by zeroing it out, and ensuring optimizations don't mess with our results.
  * @param pointer A pointer to the start of the block to erase.
