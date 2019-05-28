@@ -37,6 +37,8 @@ Suite* zalloc_suite()
     tcase_add_test(tc_core, can_free);
     tcase_add_test(tc_core, zalloc_returns_null_for_zero);
     tcase_add_test(tc_core, zalloc_sets_correct_errno_for_zero);
+    tcase_add_test(tc_core, zalloc_returns_null_for_negative_values);
+    tcase_add_test(tc_core, zalloc_sets_correct_errno_for_negative_values);
 
     suite_add_tcase(suite, tc_core);
 
