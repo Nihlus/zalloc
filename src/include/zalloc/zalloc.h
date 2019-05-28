@@ -26,6 +26,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#include "za_attributes.h"
+
 /**
  * Set when an invalid size (typically 0) is passed to @see zalloc.
  */
@@ -49,7 +51,7 @@
  * values errno can take on include @see ZERR_INVALID_SIZE (which is set when @see size is 0), as well as any error
  * codes @see calloc can set.
  */
-void* zalloc(size_t size);
+za_malloc za_public za_donotdiscard void* zalloc(size_t size);
 
 /**
  * Frees a block of memory allocated by @see zalloc, zeroes its full span, and sets the referenced pointer to null.
@@ -59,7 +61,7 @@ void* zalloc(size_t size);
  * values errno can take on include @see ZERR_INVALID_HANDLE (which is set when @see mem is either null itself or
  * points to a null value) or @see ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
  */
-bool zfree(void** mem);
+za_public za_nonnull(1) za_donotdiscard bool zfree(void** mem);
 
 /**
  * Determines the size of the given memory block allocated by @see zalloc.
@@ -69,6 +71,6 @@ bool zfree(void** mem);
  * possible values errno can take on include @see ZERR_INVALID_HANDLE (which is set when @see mem is null or @see
  * ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
  */
-size_t zsize(const void* mem);
+za_public za_pure za_nonnull(1) size_t zsize(const void* mem);
 
 #endif //ZALLOC_ZALLOC_H

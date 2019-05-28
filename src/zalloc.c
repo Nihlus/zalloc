@@ -35,21 +35,21 @@ void* zalloc(size_t size)
     if ((size + sizeof(zmem_header_t)) < size)
     {
         errno = ENOMEM;
-        return nullptr;
+        return NULL;
     }
 
     // Allocating zero-sized blocks is not allowed
     if (size < 1)
     {
         errno = ZERR_INVALID_SIZE;
-        return nullptr;
+        return NULL;
     }
 
     // calloc might return a nullptr if we're out of memory, so check for that
     void* mem = calloc(size + sizeof(zmem_header_t), 1);
-    if (mem == nullptr)
+    if (mem == NULL)
     {
-        return nullptr;
+        return NULL;
     }
 
     zmem_header_t* header = (zmem_header_t*)mem;
@@ -60,13 +60,13 @@ void* zalloc(size_t size)
 
 bool zfree(void** mem)
 {
-    if (mem == nullptr)
+    if (mem == NULL)
     {
         errno = ZERR_INVALID_HANDLE;
         return false;
     }
 
-    zmem_header_t* header = nullptr;
+    zmem_header_t* header = NULL;
     if (!try_get_zmem_header(*mem, &header))
     {
         return false;
@@ -78,14 +78,14 @@ bool zfree(void** mem)
     secure_erase((void*)actual_start, size + sizeof(zmem_header_t));
 
     free((void*)actual_start);
-    *mem = nullptr;
+    *mem = NULL;
 
     return true;
 }
 
 size_t zsize(const void* mem)
 {
-    zmem_header_t* header = nullptr;
+    zmem_header_t* header = NULL;
     if (!try_get_zmem_header(mem, &header))
     {
         return false;

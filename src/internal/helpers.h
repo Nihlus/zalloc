@@ -26,10 +26,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#ifndef nullptr
-    #define nullptr NULL
-#endif
-
 /**
  * Securely(ish) erases a block of memory by zeroing it out, and ensuring optimizations don't mess with our results.
  * @param pointer A pointer to the start of the block to erase.

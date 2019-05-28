@@ -21,6 +21,7 @@
 //
 
 #include <errno.h>
+#include <assert.h>
 
 #include "zalloc.h"
 #include "zmem_header.h"
@@ -34,15 +35,27 @@ void zmem_header(zmem_header_t* header, size_t size)
 
 bool try_get_zmem_header(const void* mem, zmem_header_t** header)
 {
-    *header = nullptr;
-
-    if (mem == nullptr)
+    if (header == NULL)
     {
         errno = ZERR_INVALID_HANDLE;
         return false;
     }
 
-    char* actual_start = ((*(char**)mem) - sizeof(zmem_header_t));
+    if (*header != NULL)
+    {
+        errno = ZERR_INVALID_HANDLE;
+        return false;
+    }
+
+    *header = NULL;
+
+    if (mem == NULL)
+    {
+        errno = ZERR_INVALID_HANDLE;
+        return false;
+    }
+
+    char* actual_start = (((char*)mem) - sizeof(zmem_header_t));
     zmem_header_t* found_header = (zmem_header_t*)actual_start;
     if (found_header->magic != ZMEM_HEADER_MAGIC)
     {
