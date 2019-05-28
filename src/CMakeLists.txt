@@ -32,7 +32,7 @@ target_compile_options(
         -fno-delete-null-pointer-checks
 )
 
-if (CMAKE_BUILD_TYPE MATCHES DEBUG)
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     target_link_libraries(
         ${PROJECT_NAME}
         PRIVATE
