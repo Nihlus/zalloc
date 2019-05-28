@@ -31,3 +31,27 @@ target_compile_options(
         -Wno-nonnull-compare
         -fno-delete-null-pointer-checks
 )
+
+if (CMAKE_BUILD_TYPE MATCHES DEBUG)
+    target_link_libraries(
+        ${PROJECT_NAME}
+        PRIVATE
+            gcov
+    )
+
+    target_compile_options(
+            ${PROJECT_NAME}
+            PRIVATE
+            --coverage
+            -fprofile-arcs
+            -ftest-coverage
+    )
+
+    target_link_options(
+            ${PROJECT_NAME}
+            PRIVATE
+            --coverage
+            -fprofile-arcs
+            -ftest-coverage
+    )
+endif()
