@@ -28,4 +28,5 @@ target_link_libraries(${PROJECT_NAME} ${CHECK_LIBRARIES} zalloc pthread)
 target_compile_options(${PROJECT_NAME}
     PRIVATE
         -Wno-unused-result
+        -Wconversion
 )
