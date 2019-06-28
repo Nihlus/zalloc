@@ -24,7 +24,7 @@ Frees a block of memory allocated by `zfree`. This zeroes the allocated region, 
 ------------------------------------------------------------------------------------------------------------------------
 `size_t zsize(const void* mem)`
 
-Determines the size of a memory block allocated by `zfree`.
+Determines the size of a memory block allocated by `zalloc`.
 
 ### Benefits?
 All memory allocated by `zalloc` is zero-initialized on allocation, and is provided to the user as such. Nonsane 
