@@ -42,4 +42,18 @@ START_TEST(zalloc_sets_correct_errno_for_zero)
 }
 END_TEST
 
+START_TEST(zalloc_returns_null_for_negative_values)
+{
+    void* bytes = zalloc(-1);
+    ck_assert_ptr_eq(bytes, NULL);
+}
+END_TEST
+
+START_TEST(zalloc_sets_correct_errno_for_negative_values)
+{
+    void* bytes = zalloc(-1);
+    ck_assert_int_eq(errno, ZERR_INVALID_SIZE);
+}
+END_TEST
+
 #endif //ZALLOC_META_ZALLOC_SIZE_H

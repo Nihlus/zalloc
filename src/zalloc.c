@@ -34,7 +34,7 @@ void* zalloc(size_t size)
     // Guard against overflows later down the line if some idiot passes negative values
     if ((size + sizeof(zmem_header_t)) < size)
     {
-        errno = ENOMEM;
+        errno = ZERR_INVALID_SIZE;
         return NULL;
     }
 
