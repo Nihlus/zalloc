@@ -1,5 +1,5 @@
 //
-//  zalloc_size.h
+//  base.h
 //
 //  Author:
 //       Jarl Gullberg <jarl.gullberg@gmail.com>
@@ -19,14 +19,21 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
+#ifndef ZALLOC_META_ZALLOC_ZALLOC_H
+#define ZALLOC_META_ZALLOC_ZALLOC_H
 
-#ifndef ZALLOC_META_ZALLOC_SIZE_H
-#define ZALLOC_META_ZALLOC_SIZE_H
-
-#include <zalloc/zalloc.h>
 #include <errno.h>
-
+#include <zalloc/zalloc.h>
 #include "check.h"
+
+START_TEST(zalloc_can_allocate)
+{
+    void* bytes = zalloc(64);
+
+    ck_assert_ptr_ne(bytes, NULL);
+    zfree(&bytes);
+}
+END_TEST
 
 START_TEST(zalloc_returns_null_for_zero)
 {
@@ -56,4 +63,4 @@ START_TEST(zalloc_sets_correct_errno_for_negative_values)
 }
 END_TEST
 
-#endif //ZALLOC_META_ZALLOC_SIZE_H
+#endif //ZALLOC_META_ZALLOC_ZALLOC_H

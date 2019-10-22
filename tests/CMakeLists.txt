@@ -6,7 +6,7 @@ set(CMAKE_C_STANDARD 11)
 find_package(Threads)
 find_package(Check)
 
-add_executable(${PROJECT_NAME})
+add_executable(${PROJECT_NAME} zalloc_zfree.h)
 
 target_include_directories(
     ${PROJECT_NAME}
@@ -19,8 +19,8 @@ target_sources(
     ${PROJECT_NAME}
     PRIVATE
         main.c
-        base.h
-        zalloc_size.h
+        zalloc_zalloc.h
+        zalloc_zsize.h
 )
 
 target_link_libraries(${PROJECT_NAME} ${CHECK_LIBRARIES} zalloc pthread)

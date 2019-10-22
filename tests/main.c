@@ -21,25 +21,36 @@
 //
 
 #include <stdlib.h>
-#include "base.h"
-#include "zalloc_size.h"
 
-Suite* zalloc_suite()
+#include "zalloc_zalloc.h"
+#include "zalloc_zsize.h"
+#include "zalloc_zfree.h"
+
+Suite* zsize_suite()
 {
-    Suite* suite;
-    TCase* tc_core;
+    Suite* suite = suite_create("zalloc");
 
-    suite = suite_create("zalloc");
-    tc_core = tcase_create("base");
+    TCase* tc_zalloc = tcase_create("zalloc");
+    tcase_add_test(tc_zalloc, zalloc_can_allocate);
+    tcase_add_test(tc_zalloc, zalloc_returns_null_for_zero);
+    tcase_add_test(tc_zalloc, zalloc_sets_correct_errno_for_zero);
+    tcase_add_test(tc_zalloc, zalloc_returns_null_for_negative_values);
+    tcase_add_test(tc_zalloc, zalloc_sets_correct_errno_for_negative_values);
 
-    tcase_add_test(tc_core, can_allocate);
-    tcase_add_test(tc_core, can_free);
-    tcase_add_test(tc_core, zalloc_returns_null_for_zero);
-    tcase_add_test(tc_core, zalloc_sets_correct_errno_for_zero);
-    tcase_add_test(tc_core, zalloc_returns_null_for_negative_values);
-    tcase_add_test(tc_core, zalloc_sets_correct_errno_for_negative_values);
+    TCase* tc_zfree = tcase_create("zfree");
+    tcase_add_test(tc_zfree, zfree_can_free);
+    tcase_add_test(tc_zfree, zfree_actually_zeroes);
+    tcase_add_test(tc_zfree, zfree_returns_false_if_memory_was_not_allocated_with_zalloc);
+    tcase_add_test(tc_zfree, zfree_sets_correct_errno_if_memory_was_not_allocated_with_zalloc);
 
-    suite_add_tcase(suite, tc_core);
+    TCase* tc_zsize = tcase_create("zsize");
+    tcase_add_test(tc_zsize, zsize_can_get_size);
+    tcase_add_test(tc_zsize, zsize_returns_zero_if_memory_was_not_allocated_with_zalloc);
+    tcase_add_test(tc_zsize, zsize_sets_correct_errno_if_memory_was_not_allocated_with_zalloc);
+
+    suite_add_tcase(suite, tc_zalloc);
+    suite_add_tcase(suite, tc_zfree);
+    suite_add_tcase(suite, tc_zsize);
 
     return suite;
 }
@@ -47,7 +58,7 @@ Suite* zalloc_suite()
 int main()
 {
     int number_failed = 0;
-    Suite* suite = zalloc_suite();
+    Suite* suite = zsize_suite();
     SRunner* runner = srunner_create(suite);
 
     srunner_set_fork_status(runner, CK_NOFORK);

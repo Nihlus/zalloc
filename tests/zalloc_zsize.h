@@ -1,5 +1,5 @@
 //
-//  base.h
+//  zsize_size.h
 //
 //  Author:
 //       Jarl Gullberg <jarl.gullberg@gmail.com>
@@ -19,27 +19,49 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
-#ifndef ZALLOC_META_BASE_H
-#define ZALLOC_META_BASE_H
+
+#ifndef ZALLOC_META_ZALLOC_ZSIZE_H
+#define ZALLOC_META_ZALLOC_ZSIZE_H
 
 #include <zalloc/zalloc.h>
+#include <errno.h>
+
 #include "check.h"
 
-START_TEST(can_allocate)
+START_TEST(zsize_can_get_size)
 {
-    void* bytes = zalloc(64);
+    size_t size = 64;
+    void* bytes = zalloc(size);
 
-    ck_assert_ptr_ne(bytes, NULL);
+    size_t storedSize = zsize(bytes);
+    ck_assert(size == storedSize);
+
+    // Cleanup
     zfree(&bytes);
 }
 END_TEST
 
-START_TEST(can_free)
+START_TEST(zsize_returns_zero_if_memory_was_not_allocated_with_zalloc)
 {
-    void* bytes = zalloc(64);
-    ck_assert(zfree(&bytes));
+    void* bytes = malloc(64);
+
+    ck_assert(zsize(bytes) == 0);
+
+    // Cleanup
+    free(bytes);
 }
 END_TEST
 
+START_TEST(zsize_sets_correct_errno_if_memory_was_not_allocated_with_zalloc)
+{
+    void* bytes = calloc(1, 64);
 
-#endif //ZALLOC_META_BASE_H
+    size_t size = zsize(bytes);
+    ck_assert(errno == ZERR_BAD_MAGIC);
+
+    // Cleanup
+    free(bytes);
+}
+END_TEST
+
+#endif //ZALLOC_META_ZALLOC_ZSIZE_H
