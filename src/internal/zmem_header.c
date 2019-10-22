@@ -33,7 +33,7 @@ void zmem_header(zmem_header_t* header, size_t size)
     header->size = size;
 }
 
-bool try_get_zmem_header(const void* mem, zmem_header_t** header)
+bool try_get_zmem_header(const_zmem_t mem, const zmem_header_t** header)
 {
     if (header == NULL)
     {
@@ -53,8 +53,8 @@ bool try_get_zmem_header(const void* mem, zmem_header_t** header)
         return false;
     }
 
-    char* actual_start = (((char*)mem) - sizeof(zmem_header_t));
-    zmem_header_t* found_header = (zmem_header_t*)actual_start;
+    const_zmem_t actual_start = mem - sizeof(zmem_header_t);
+    const zmem_header_t* found_header = (const zmem_header_t*)actual_start;
     if (found_header->magic != ZMEM_HEADER_MAGIC)
     {
         errno = ZERR_BAD_MAGIC;

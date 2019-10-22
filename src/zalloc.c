@@ -66,7 +66,7 @@ bool zfree(zmem_t* mem)
         return false;
     }
 
-    zmem_header_t* header = NULL;
+    const zmem_header_t* header = NULL;
     if (!try_get_zmem_header(*mem, &header))
     {
         return false;
@@ -85,7 +85,7 @@ bool zfree(zmem_t* mem)
 
 size_t zsize(const_zmem_t mem)
 {
-    zmem_header_t* header = NULL;
+    const zmem_header_t* header = NULL;
     if (!try_get_zmem_header(mem, &header))
     {
         return 0;

@@ -63,6 +63,6 @@ za_nonnull(1) void zmem_header(zmem_header_t* header, size_t size);
  * information. The possible values errno can take on include @see ZERR_INVALID_HANDLE (which is set when @see mem is
  * null or @see ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
  */
-za_nonnull(1, 2) za_donotdiscard bool try_get_zmem_header(const void* mem, zmem_header_t** header);
+za_nonnull(1, 2) za_donotdiscard bool try_get_zmem_header(const_zmem_t mem, const zmem_header_t** header);
 
 #endif //ZALLOC_ZMEM_HEADER_H

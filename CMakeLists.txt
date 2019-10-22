@@ -8,16 +8,47 @@ set(CMAKE_VISIBILITY_INLINES_HIDDEN true)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 add_compile_options(
-        -Wall
-        -Wextra
-        -Wconversion
-        -pedantic
-        -Werror
-        -Wno-nonnull-compare
-        -fno-delete-null-pointer-checks
+        # Portability
+        -fpie
+        -pie
+        -fPIC
+        -shared
+
+        # Various hardening options
+        -fasynchronous-unwind-tables
+        -fstack-protector-all
+        -fstack-protector-strong
+
+        # Compile-time optimizations
+        -pipe
 )
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_options(
+            -Wall
+            -Werror
+            -Wextra
+            -Wpedantic
+            -Wlogical-op
+            -Wdouble-promotion
+            -Wformat=2
+            -Wshadow
+            -Wcast-qual
+            -Wdisabled-optimization
+            -Winit-self
+            -Wmissing-include-dirs
+            -Wredundant-decls
+            -Wstrict-overflow=5
+            -Wundef
+            -Wconversion
+            -Wswitch
+            -Winvalid-pch
+            -Wformat-nonliteral
+            -Wmissing-format-attribute
+            -Wno-nonnull-compare
+            -fno-delete-null-pointer-checks
+    )
+
     link_libraries(
         gcov
     )
