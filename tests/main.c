@@ -20,7 +20,6 @@
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
-#include <check.h>
 #include <stdlib.h>
 #include "base.h"
 #include "zalloc_size.h"
