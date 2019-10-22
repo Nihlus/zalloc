@@ -25,6 +25,7 @@
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <stdint.h>
 
 #include "za_attributes.h"
 
@@ -44,6 +45,16 @@
 #define ZERR_BAD_MAGIC (1u << 2u)
 
 /**
+ * Defines a pointer a block of memory allocated by zalloc.
+ */
+typedef uint8_t* zmem_t;
+
+/**
+ * Defines a constant pointer to a block of memory allocated by zalloc.
+ */
+typedef const uint8_t* const_zmem_t;
+
+/**
  * Allocates a block of zero-initialized memory.
  * @param size The size (in bytes) of the block that is to be allocated.
  * @return A pointer to the block, or @see nullptr.
@@ -51,7 +62,7 @@
  * values errno can take on include @see ZERR_INVALID_SIZE (which is set when @see size is 0), as well as any error
  * codes @see calloc can set.
  */
-za_malloc za_public za_donotdiscard void* zalloc(size_t size);
+za_malloc za_public za_donotdiscard zmem_t zalloc(size_t size);
 
 /**
  * Frees a block of memory allocated by @see zalloc, zeroes its full span, and sets the referenced pointer to null.
@@ -61,7 +72,7 @@ za_malloc za_public za_donotdiscard void* zalloc(size_t size);
  * values errno can take on include @see ZERR_INVALID_HANDLE (which is set when @see mem is either null itself or
  * points to a null value) or @see ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
  */
-za_public za_nonnull(1) za_donotdiscard bool zfree(void** mem);
+za_public za_nonnull(1) za_donotdiscard bool zfree(zmem_t* mem);
 
 /**
  * Determines the size of the given memory block allocated by @see zalloc.
@@ -71,6 +82,6 @@ za_public za_nonnull(1) za_donotdiscard bool zfree(void** mem);
  * possible values errno can take on include @see ZERR_INVALID_HANDLE (which is set when @see mem is null or @see
  * ZERR_BAD_MAGIC (which is set when the passed pointer wasn't allocated by @see zalloc.
  */
-za_public za_pure za_nonnull(1) size_t zsize(const void* mem);
+za_public za_pure za_nonnull(1) size_t zsize(const_zmem_t mem);
 
 #endif //ZALLOC_ZALLOC_H

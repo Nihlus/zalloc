@@ -31,7 +31,7 @@
 START_TEST(zsize_can_get_size)
 {
     size_t size = 64;
-    void* bytes = zalloc(size);
+    zmem_t bytes = zalloc(size);
 
     size_t storedSize = zsize(bytes);
     ck_assert(size == storedSize);
@@ -43,7 +43,7 @@ END_TEST
 
 START_TEST(zsize_returns_zero_if_memory_was_not_allocated_with_zalloc)
 {
-    void* bytes = malloc(64);
+    zmem_t bytes = malloc(64);
 
     ck_assert(zsize(bytes) == 0);
 
@@ -54,7 +54,7 @@ END_TEST
 
 START_TEST(zsize_sets_correct_errno_if_memory_was_not_allocated_with_zalloc)
 {
-    void* bytes = calloc(1, 64);
+    zmem_t bytes = calloc(1, 64);
 
     size_t size = zsize(bytes);
     ck_assert(errno == ZERR_BAD_MAGIC);

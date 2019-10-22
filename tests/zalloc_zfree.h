@@ -29,22 +29,22 @@
 
 START_TEST(zfree_can_free)
 {
-    void* bytes = zalloc(64);
+    zmem_t bytes = zalloc(64);
     ck_assert(zfree(&bytes));
 }
 END_TEST
 
 START_TEST(zfree_actually_zeroes)
 {
-    char* bytes = (char*)zalloc(64);
+    zmem_t bytes = zalloc(64);
     memset(bytes, 0xF, 64);
     for (int i = 0; i < 64; ++i)
     {
         ck_assert_int_eq(bytes[i], 0xF);
     }
 
-    char* ptrCopy = bytes;
-    zfree((void**)&bytes);
+    zmem_t ptrCopy = bytes;
+    zfree(&bytes);
 
     for (int i = 0; i < 64; ++i)
     {
@@ -55,9 +55,9 @@ END_TEST
 
 START_TEST(zfree_returns_false_if_memory_was_not_allocated_with_zalloc)
 {
-    void* bytes = calloc(1, 64);
+    zmem_t bytes = calloc(1, 64);
 
-    ck_assert(!zfree(bytes));
+    ck_assert(!zfree(&bytes));
 
     // Cleanup
     free(bytes);
@@ -66,7 +66,7 @@ END_TEST
 
 START_TEST(zfree_sets_correct_errno_if_memory_was_not_allocated_with_zalloc)
 {
-    void* bytes = calloc(1, 64);
+    zmem_t bytes = calloc(1, 64);
 
     zfree(&bytes);
     ck_assert(errno == ZERR_BAD_MAGIC);

@@ -29,7 +29,7 @@
 #include <errno.h>
 #include <string.h>
 
-void* zalloc(size_t size)
+zmem_t zalloc(size_t size)
 {
     // Guard against overflows later down the line if some idiot passes negative values
     if ((size + sizeof(zmem_header_t)) < size)
@@ -55,10 +55,10 @@ void* zalloc(size_t size)
     zmem_header_t* header = (zmem_header_t*)mem;
     zmem_header(header, size);
 
-    return (char*)mem + sizeof(zmem_header_t);
+    return (uint8_t*)mem + sizeof(zmem_header_t);
 }
 
-bool zfree(void** mem)
+bool zfree(zmem_t* mem)
 {
     if (mem == NULL)
     {
@@ -74,7 +74,7 @@ bool zfree(void** mem)
 
     size_t size = header->size;
 
-    char* actual_start = ((*(char**)mem) - sizeof(zmem_header_t));
+    uint8_t* actual_start = ((*(uint8_t**)mem) - sizeof(zmem_header_t));
     secure_erase((void*)actual_start, size + sizeof(zmem_header_t));
 
     free((void*)actual_start);
@@ -83,7 +83,7 @@ bool zfree(void** mem)
     return true;
 }
 
-size_t zsize(const void* mem)
+size_t zsize(const_zmem_t mem)
 {
     zmem_header_t* header = NULL;
     if (!try_get_zmem_header(mem, &header))
