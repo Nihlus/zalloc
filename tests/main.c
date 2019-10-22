@@ -42,6 +42,8 @@ Suite* zsize_suite()
     tcase_add_test(tc_zfree, zfree_actually_zeroes);
     tcase_add_test(tc_zfree, zfree_returns_false_if_memory_was_not_allocated_with_zalloc);
     tcase_add_test(tc_zfree, zfree_sets_correct_errno_if_memory_was_not_allocated_with_zalloc);
+    tcase_add_test(tc_zfree, zfree_returns_false_if_memory_pointer_is_null);
+    tcase_add_test(tc_zfree, zfree_sets_correct_errno_if_memory_pointer_is_null);
 
     TCase* tc_zsize = tcase_create("zsize");
     tcase_add_test(tc_zsize, zsize_can_get_size);

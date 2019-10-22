@@ -76,4 +76,17 @@ START_TEST(zfree_sets_correct_errno_if_memory_was_not_allocated_with_zalloc)
 }
 END_TEST
 
+START_TEST(zfree_returns_false_if_memory_pointer_is_null)
+{
+    ck_assert(!zfree(NULL));
+}
+END_TEST
+
+START_TEST(zfree_sets_correct_errno_if_memory_pointer_is_null)
+{
+    zfree(NULL);
+    ck_assert(errno == ZERR_INVALID_HANDLE);
+}
+END_TEST
+
 #endif //ZALLOC_META_ZALLOC_ZFREE_H
