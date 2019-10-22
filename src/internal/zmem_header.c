@@ -47,8 +47,6 @@ bool try_get_zmem_header(const void* mem, zmem_header_t** header)
         return false;
     }
 
-    *header = NULL;
-
     if (mem == NULL)
     {
         errno = ZERR_INVALID_HANDLE;
