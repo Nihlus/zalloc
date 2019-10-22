@@ -49,6 +49,16 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
             -fno-delete-null-pointer-checks
     )
 
+    if (CMAKE_C_COMPILER_VERSION VERSION_GREATER 4.8.5)
+        add_compile_options(
+            -Wrestrict
+            -Wnull-dereference
+            -Wduplicated-cond
+            -Wduplicated-branches
+            -Wodr
+        )
+    endif()
+
     link_libraries(
         gcov
     )
@@ -63,6 +73,19 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
         --coverage
         -fprofile-arcs
         -ftest-coverage
+    )
+elseif(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+    add_compile_definitions(
+        _FORTIFY_SOURCE=2
+    )
+
+    add_compile_options(
+        -O2
+        -flto
+    )
+
+    add_link_options(
+        -flto
     )
 endif()
 
