@@ -23,8 +23,7 @@
 #ifndef ZALLOC_HELPERS_H
 #define ZALLOC_HELPERS_H
 
-#include <stdlib.h>
-#include <string.h>
+#include <stddef.h>
 
 /**
  * Securely(ish) erases a block of memory by zeroing it out, and ensuring optimizations don't mess with our results.
