@@ -88,7 +88,7 @@ size_t zsize(const void* mem)
     zmem_header_t* header = NULL;
     if (!try_get_zmem_header(mem, &header))
     {
-        return false;
+        return 0;
     }
 
     return header->size;
