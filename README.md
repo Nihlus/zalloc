@@ -19,7 +19,7 @@ Allocates a block of zero-initialized memory.
 ------------------------------------------------------------------------------------------------------------------------
 `bool zfree(void** mem)`
 
-Frees a block of memory allocated by `zfree`. This zeroes the allocated region, and sets the referenced pointer to null.
+Frees a block of memory allocated by `zalloc`. This zeroes the allocated region, and sets the referenced pointer to null.
 
 ------------------------------------------------------------------------------------------------------------------------
 `size_t zsize(const void* mem)`
