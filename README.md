@@ -28,7 +28,7 @@ Determines the size of a memory block allocated by `zalloc`.
 
 ### Benefits?
 All memory allocated by `zalloc` is zero-initialized on allocation, and is provided to the user as such. Nonsane 
-allocation request (such as zero-size allocations) are rejected. 
+allocation requests (such as zero-size allocations) are rejected. 
 
 When memory blocks allocated with `zalloc` are freed, they are once again zeroed to erase potentially sensitive data and
 to improve fault detection. Instead of reading garbage data in the case of a fault condition, the presence of 
